@@ -49,8 +49,9 @@ class MainActivity : ComponentActivity() {
 fun MainScreen(modifier: Modifier = Modifier) {
     // ClickDemo(modifier)
     // TapPressDemo(modifier)
-    DragDemo(modifier)
-
+    // DragDemo(modifier)
+    // PointerInputDrag(modifier)
+    ScrollableModifier(modifier)
 }
 
 @Composable
@@ -120,6 +121,47 @@ fun DragDemo(modifier: Modifier = Modifier) {
                     }
                 )
         )
+    }
+}
+
+@Composable
+fun PointerInputDrag(modifier: Modifier = Modifier) {
+    Box(modifier = modifier.fillMaxSize()) {
+        var xOffset by remember { mutableStateOf(0f) }
+        var yOffset by remember { mutableStateOf(0f) }
+        Box(
+            Modifier
+                .offset { IntOffset(xOffset.roundToInt(), yOffset.roundToInt()) }
+                .background(Color.Blue)
+                .size(100.dp)
+                .pointerInput(Unit) {
+                    detectDragGestures { _, distance ->
+                        xOffset += distance.x
+                        yOffset += distance.y
+                    }
+                }
+        )
+    }
+}
+
+@Composable
+fun ScrollableModifier(modifier: Modifier = Modifier) {
+    var offset by remember { mutableStateOf(0f) }
+    Box(
+        modifier
+            .fillMaxSize()
+            .scrollable(
+                orientation = Orientation.Vertical,
+                state = rememberScrollableState { distance ->
+                    offset += distance
+                    distance
+                }
+            )
+    ) {
+        Box(modifier = Modifier
+            .size(90.dp)
+            .offset { IntOffset(0, offset.roundToInt()) }
+            .background(Color.Red))
     }
 }
 
