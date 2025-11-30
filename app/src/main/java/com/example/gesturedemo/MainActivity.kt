@@ -48,7 +48,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
     // ClickDemo(modifier)
-    TapPressDemo(modifier)
+    // TapPressDemo(modifier)
+    DragDemo(modifier)
+
 }
 
 @Composable
@@ -97,6 +99,27 @@ fun TapPressDemo(modifier: Modifier = Modifier) {
         )
         Spacer(Modifier.height(10.dp))
         Text(textState)
+    }
+}
+
+@Composable
+fun DragDemo(modifier: Modifier = Modifier) {
+    Box(modifier = modifier.fillMaxSize()) {
+
+        var xOffset by remember { mutableStateOf(0f) }
+
+        Box(
+            modifier = Modifier
+                .offset { IntOffset(xOffset.roundToInt(), 0) }
+                .size(100.dp)
+                .background(Color.Blue)
+                .draggable(
+                    orientation = Orientation.Horizontal,
+                    state = rememberDraggableState { distance ->
+                        xOffset += distance
+                    }
+                )
+        )
     }
 }
 
