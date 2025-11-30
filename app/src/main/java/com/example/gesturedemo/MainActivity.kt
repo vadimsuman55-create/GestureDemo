@@ -55,7 +55,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
     // DragDemo(modifier)
     // PointerInputDrag(modifier)
     // ScrollableModifier(modifier)
-    ScrollModifiers(modifier)
+    // ScrollModifiers(modifier)
+    MultiTouchDemo(modifier)
 }
 
 @Composable
@@ -189,6 +190,27 @@ fun ScrollModifiers(modifier: Modifier = Modifier) {
                 ),
             )
         }
+    }
+}
+
+@Composable
+fun MultiTouchDemo(modifier: Modifier = Modifier) {
+    var scale by remember { mutableStateOf(1f) }
+    val state = rememberTransformableState {
+            scaleChange, offsetChange, rotationChange ->
+        scale *= scaleChange
+    }
+    Box(contentAlignment = Alignment.Center, modifier = modifier.fillMaxSize()) {
+        Box(
+            Modifier
+                .graphicsLayer(
+                    scaleX = scale,
+                    scaleY = scale
+                )
+                .transformable(state = state)
+                .background(Color.Blue)
+                .size(100.dp)
+        )
     }
 }
 
