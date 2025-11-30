@@ -47,7 +47,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
-    ClickDemo(modifier)
+    // ClickDemo(modifier)
+    TapPressDemo(modifier)
 }
 
 @Composable
@@ -68,6 +69,35 @@ fun ClickDemo(modifier: Modifier = Modifier) {
             .background(bgColor)
             .size(100.dp)
     )
+}
+
+@Composable
+fun TapPressDemo(modifier: Modifier = Modifier) {
+    var textState by remember {mutableStateOf("Waiting ....")}
+    val tapHandler = { status : String ->
+        textState = status
+    }
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.fillMaxSize()
+    ) {
+        Box(
+            Modifier
+                .padding(10.dp)
+                .background(Color.Blue)
+                .size(100.dp)
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onPress = { tapHandler("onPress Detected") },
+                        onDoubleTap = { tapHandler("onDoubleTap Detected") },
+                        onLongPress = { tapHandler("onLongPress Detected") },
+                        onTap = { tapHandler("onTap Detected") }
+                    )
+                }
+        )
+        Spacer(Modifier.height(10.dp))
+        Text(textState)
+    }
 }
 
 @Preview(showBackground = true)
